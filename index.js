@@ -20,10 +20,14 @@ let notes = [
     }
 ];
 app.use(cors());
+app.use(express.static("dist"));
 
 app.use(express.json());
 
 app.get("/", (req, res) => {
+    res.send("<h1>Hello World!</h1>")
+});
+app.get("/hello", (req, res) => {
     res.send("<h1>Hello World!</h1>")
 });
 
@@ -76,8 +80,6 @@ app.post("/api/notes", (req, res) => {
     notes = notes.concat(note);
 
     res.json(note);
-
-    console.log("Yoo");
 });
 
 
