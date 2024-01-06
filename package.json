@@ -7,7 +7,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "buildfront": "rm -rf dist && cd ../fullstack_tutorial/ && npm run build && cp -r dist ../backend_part_tutorial",
-    "deploy": "npm run buildfront && git add . && git commit -m 'uibuild' && git push"
+    "deploy": "npm run buildfront && git add . && git commit -m 'uibuild' && git push origin main"
   },
   "author": "",
   "license": "ISC",
