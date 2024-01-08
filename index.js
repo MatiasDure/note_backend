@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const dbConnection = require("./mongoConn");
+const middlewares = require("./middlewares");
 const noteModel = require("./models/Note");
 const app = express();
 
@@ -16,7 +17,7 @@ const requestLogger = (req, res, next) => {
 	next();
 };
 
-app.use(requestLogger);
+app.use(middlewares.requestLogger);
 
 app.get("/api/notes", (req, res, next) => {
 	noteModel
@@ -94,7 +95,7 @@ const unknownEndpoint = (req, res) => {
 	res.status(404).send({ error: "Unknown endpoint" });
 };
 
-app.use(unknownEndpoint);
+app.use(middlewares.unknownEndpoint);
 
 const errorHandler = (err, req, res, next) => {
 	console.log(err.message);
@@ -105,7 +106,7 @@ const errorHandler = (err, req, res, next) => {
 	next(err);
 };
 
-app.use(errorHandler);
+app.use(middlewares.errorHandler);
 
 
 const PORT = process.env.PORT;
