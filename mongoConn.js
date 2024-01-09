@@ -1,3 +1,5 @@
+const { MONGODB_URI } = require("./utils/config");
+const logger = require("./utils/logger");
 const mongoose = require("mongoose");
 
 const connectDB = () => {
@@ -8,17 +10,15 @@ const connectDB = () => {
 	// const url = `mongodb+srv://myAtlasDBUser:${password}@myatlasclusteredu.kguxzmt.mongodb.net/noteApp?retryWrites=true&w=majority`;
 	mongoose.set("strictQuery", false);
 
-	const url = process.env.MONGODB_URI;
-
-	console.log(`connection to ${url}`);
+	logger.info(`Connecting to ${MONGODB_URI}`);
 
 	mongoose
-		.connect(url)
+		.connect(MONGODB_URI)
 		.then(() => {
-			console.log("connected to MongoDB");
+			logger.info("connected to MongoDB");
 		})
 		.catch((err) => {
-			console.log("Error connection to MongoDB:", err.message);
+			logger.error("Error connection to MongoDB:", err.message);
 		});
 };
 
