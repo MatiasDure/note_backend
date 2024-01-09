@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dbConnection = require("./mongoConn");
+require("express-async-errors");
 const middlewares = require("./utils/middlewares");
 const userRouter = require("./controllers/users");
 const noteRouter = require("./controllers/notes");

@@ -1,6 +1,8 @@
+const logger = require("./logger");
+
 const requestLogger = (req, res, next) => {
 	const origin = `${req.protocol}://${req.hostname}${req.path}`;
-	console.log(`\n-----${req.method} request-----\n-----Origin: ${origin}-----\n-----Body: ${JSON.stringify(req.body)}-----\n`);
+	logger.info(`\n-----${req.method} request-----\n-----Origin: ${origin}-----\n-----Body: ${JSON.stringify(req.body)}-----\n`);
 	next();
 };
 
@@ -9,7 +11,7 @@ const unknownEndpoint = (req, res) => {
 };
 
 const errorHandler = (err, req, res, next) => {
-	console.log(err.message);
+	logger.error(err.message);
 
 	if(err.name === "CastError") return res.status(400).json({ error: "malformatted id" });
 	else if(err.name === "ValidationError") return res.status(400).json({ error: err.message });

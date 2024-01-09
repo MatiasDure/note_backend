@@ -1,63 +1,54 @@
 const noteRouter = require("express").Router();
 const noteModel = require("../models/Note");
 
-noteRouter.get("/", (req, res, next) => {
-	noteModel
-		.find({})
-		.then( (notes) => {
-			res.json(notes);
-		})
-		.catch((err) => next(err));
+noteRouter.get("/", async (req, res) => {
+
+	const notes = await noteModel.find({});
+
+	res.json(notes);
 });
 
-noteRouter.delete("/:id", (req, res, next) => {
+noteRouter.delete("/:id", async (req, res) => {
 	const id = req.params.id;
 	// notes = notes.filter((note) => note.id.toString() !== id);
-	noteModel
-		.findByIdAndDelete(id)
-		.then(() => {
-			res.status(204).end();
-		})
-		.catch((err) => next(err));
+	await noteModel.findByIdAndDelete(id);
+
+	res.status(204).end();
 });
 
-noteRouter.get("/:id", (req, res, next) => {
+noteRouter.get("/:id", async (req, res) => {
 	const id = req.params.id;
 	// console.log(id);
-	noteModel
-		.findById(id)
-		.then((note) => {
-			if(note) {
-				res.json(note);
-				return;
-			}
+	const note = await noteModel.findById(id);
 
-			res.status(404).end();
-		})
-		.catch((err) => next(err));
+	if(note) {
+		res.json(note);
+		return;
+	}
+
+	res.status(404).end();
 });
 
-noteRouter.put("/:id", (req, res, next) => {
+noteRouter.put("/:id", async (req, res) => {
 	const id = req.params.id;
 	const { content, important } = req.body;
 
-	noteModel
-		.findByIdAndUpdate(
-			id,
-			{ content, important },
-			{
-				new: true,
-				runValidators: true,
-				context: "query"
-			}
-		)
-		.then((updatedNote) => {
-			res.json(updatedNote);
-		})
-		.catch((err) => next(err));
+	const updatedNote = await noteModel.findByIdAndUpdate(
+		id,
+		{ content, important },
+		{
+			new: true,
+			runValidators: true,
+			context: "query"
+		}
+	);
+
+	res.json(updatedNote);
+
 });
 
-noteRouter.post("/", (req, res, next) => {
+noteRouter.post("/", async (req, res) => {
+
 	const body = req.body;
 
 	const note = new noteModel({
@@ -65,12 +56,10 @@ noteRouter.post("/", (req, res, next) => {
 		important: Boolean(body.important),
 	});
 
-	note
-		.save()
-		.then((createdNote) => {
-			res.json(createdNote);
-		})
-		.catch((err) => next(err));
+	const createdNote = await note.save();
+
+	res.status(201).json(createdNote);
+
 });
 
 module.exports = noteRouter;
