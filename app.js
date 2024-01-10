@@ -5,6 +5,7 @@ require("express-async-errors");
 const middlewares = require("./utils/middlewares");
 const userRouter = require("./controllers/users");
 const noteRouter = require("./controllers/notes");
+const loginRouter = require("./controllers/login");
 const app = express();
 
 dbConnection();
@@ -15,6 +16,7 @@ app.use(middlewares.requestLogger);
 
 app.use("/api/notes", noteRouter);
 app.use("/api/users", userRouter);
+app.use("/api/login", loginRouter);
 
 app.use(middlewares.unknownEndpoint);
 app.use(middlewares.errorHandler);
